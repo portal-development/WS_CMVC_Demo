@@ -1,0 +1,22 @@
+﻿@model ConfirmPhoneNumberViewModel
+@{
+    ViewBag.Title = "Подтверждение мобильного телефона";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (@ViewBag.act == "pwdreset")
+{
+    <p>Для восстановления пароля введите код отправленный в смс</p>
+}
+else
+{
+    <p>Для активации учетной записи введите код отправленный в смс</p>
+}
+<div style="max-width:350px;">
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group"><input asp-for="Code" type="number" autocomplete="one-time-code" inputmode="numeric" class="form-control" style="max-width: 500px;" /></div>
+        <div class="form-group"><input type="submit" value="Отправить" class="btn btn-outline-dark btn-block mw-100" /></div>
+    </form>
+</div>

@@ -1,0 +1,36 @@
+﻿@model MemberViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> ExProp = ViewBag.ExcludeProp ?? new List<string>();
+}
+
+<h2>@ViewData["Title"]</h2>
+<h4>Категория: @ViewData["UserCategory"]</h4>
+<div class="@(ViewBag.IsAccreditator ? "" : "d-none")">
+    <a asp-action="UserCategoryEdit" asp-route-id="@ViewData["UserId"]" class="btn btn-outline-info">Изменить категорию</a>
+</div>
+
+<hr />
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <partial name="_RegisterPartial" />
+    <div class="form-group row">
+        <div class="offset-md-2 col-md-10">
+            <input type="submit" class="btn btn-outline-dark" value="Записать" />
+        </div>
+    </div>
+</form>
+
+<div class="@(ViewBag.IsAccreditator ? "d-none" : "")">
+    <a asp-action="Index">Назад</a>
+</div>
+<div class="@(ViewBag.IsAccreditator ? "" : "d-none")">
+    <a asp-action="AccrEdit" asp-route-id="@ViewData["UserId"]">Назад</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ExcludePropScriptPartial");
+    }
+}

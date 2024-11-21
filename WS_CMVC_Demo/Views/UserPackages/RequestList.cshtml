@@ -1,0 +1,118 @@
+﻿@using WS_CMVC_Demo.Models.UserPackagesViewModels
+@using WS_CMVC_Demo.Models.Service
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Web.Common
+@model SortedRequestViewModel
+
+@{
+    ViewData["Title"] = "Заявки";
+    var paginationOptions = new PagedListRenderOptions()
+            {
+                PageClasses = new string[] { "page-link" },
+                LiElementClasses = new[] { "page-item" },
+                UlElementClasses = new[] { "pagination", "justify-content-center" },
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always
+            };
+}
+
+<h1><i class="fa fa-qrcode" aria-hidden="true"></i> @ViewBag.Title</h1>
+<form method="get">
+    <input type="hidden" name="eventid" value="@ViewBag.EventId" />
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-12 col-md-3">
+                <input asp-for="Searchstring" class="form-control" placeholder="Поиск по ФИО" />
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <select asp-for="Status" class="form-control auto-submit" asp-items="Html.GetEnumSelectList<UserPackageServiceStatus>()">
+                    <option value="">Любой статус</option>
+                </select>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <select asp-for="Order" class="form-control auto-submit" asp-items="Html.GetEnumSelectList<OrderBy>()"></select>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <select asp-for="PageSize" class="form-control auto-submit" asp-items="Html.GetEnumSelectList<PageSize>()"></select>
+            </div>
+        </div>
+    </div>
+</form>
+@Html.PagedListPager(Model.Requests, page => Url.Action("RequestList",
+    new { page, PageSize = (int)Model.PageSize, Order = (int)Model.Order, Status = (int?)Model.Status, eventid = ViewBag.EventId, Searchstring = Model.Searchstring }),
+    paginationOptions)
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Requests.First().FIO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Requests.First().DelegationFIO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Requests.First().PackageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Requests.First().Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Requests.First().CreateDate)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Requests)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.PackageId" asp-route-userid="@item.UserId" asp-route-eventid="@ViewBag.EventId" class="btn btn-sm btn-outline-primary @(item.PackageId == 0 ? "d-none" : "")">Просмотр</a>
+                </td>
+                <td>
+                    <a asp-controller="Delegation" asp-action="UserDetails" asp-route-id="@item.UserId">@item.FIO</a>
+                    <a asp-action="AccrEdit" asp-controller="Delegation" asp-route-id="@item.UserId" class="btn btn-outline-success btn-sm @(ViewBag.IsAccreditator ? "" : "d-none")" target="_blank">Войти</a>
+                </td>
+                <td>
+                    <a asp-controller="Delegation" asp-action="Details" asp-route-id="@item.DelegationUserId">@item.DelegationFIO</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PackageName)
+                    <div class="@(item.RightPackage ? "d-none" : "")">
+                        <p class="text-danger">Пакет не соответствует подкатегории!</p>
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="AdminPanel" asp-action="Index">Назад</a>
+<hr />
+
+@section Scripts {
+<script type="text/javascript">
+    var text = '';
+    document.onkeypress = function(e) {
+        if(e.code.substr(0, 5) == 'Digit') {
+            text += e.code.substring(5, 6);
+        } else if(e.code.substr(0, 3) == 'Key') {
+            text += e.code.substring(3, 4);
+        } else if(e.code == 'Enter') {
+            var n = text.length - 32;
+            text = text.substring(n);
+            if(text.length == 32 && text[12] == '4') {
+                console.log(text);
+                window.location.replace('/UserPackages/RequestList?eventid=1&UserId=' + text);
+            }
+        }
+    };
+</script>
+}

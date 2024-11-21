@@ -1,0 +1,72 @@
+﻿@model IEnumerable<UserSubcategory>
+
+@{
+    ViewData["Title"] = "Подкатегории пользователей";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Добавить</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncludeProperties)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NotFreePackage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BadgeColorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BadgeTextColorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TitleForPrint)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @String.Join(" || ", item.IncludeProperties ?? new string[] {})
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NotFreePackage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BadgeColor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BadgeTextColor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TitleForPrint)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

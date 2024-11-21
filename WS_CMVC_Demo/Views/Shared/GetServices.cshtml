@@ -1,0 +1,67 @@
+﻿@model IList<WS_CMVC_Demo.Models.Service.Service>
+
+<div id="servicechange">
+    <div class="form-group">
+    <p>Услуга</p>
+    <select class="form-control" id="serviceddl" name="ServiceId">
+        @foreach (var item in Model)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>          
+    
+    </div>
+    <div id="quotas">
+                    <p>Доступные квоты</p>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <td>
+                                Начало
+                            </td>
+                            <td>
+                                Конец
+                            </td>
+                            <td>
+                               Квота
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                @if (ViewBag.Quotas != null)
+                {
+                    @foreach (var quota in ViewBag.Quotas)
+                    {
+                        <tr>
+                            <td>
+                                @quota.StartDate
+                            </td>
+                            <td>
+                                @quota.FinishDate
+                            </td>
+                            <td>
+                                @quota.Num
+                            </td>
+                        </tr>
+                }}
+                    </tbody>
+                </table>
+                </div>
+</div>
+<script>
+
+        $('#serviceddl').change(function()
+        {
+            // получаем выбранный id
+            var serviceid = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetQuotasForService")/' + serviceid,
+                success: function (data) {
+                     
+                    // заменяем содержимое присланным частичным представлением
+                    $('#quotas').replaceWith(data);
+                }
+            });
+            
+        });</script>

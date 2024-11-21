@@ -1,0 +1,3 @@
+﻿@using WS_CMVC_Demo.Models.Badge
+@model ServiceCheckupType
+<span class="@(Model == ServiceCheckupType.Approve ? "text-success" : (Model == ServiceCheckupType.Canceled ? "text-warning" : "text-danger"))">@(EnumHelper<ServiceCheckupType>.GetDisplayValue(Model))</span>

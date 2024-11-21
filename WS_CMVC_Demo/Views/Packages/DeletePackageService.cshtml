@@ -1,0 +1,54 @@
+﻿@model WS_CMVC_Demo.Models.Service.PackageService
+
+@{
+    ViewData["Title"] = "Удаление услуги из пакета";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Вы подтверждаете удаление услуги из пакета?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Package)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Package.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Service)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Service.Name)
+        </dd>
+    </dl>
+    <div class="@(Model.Service.ServiceType.ShowDates ? "" : "inv")">
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FinishDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FinishDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MinimalDaysCount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MinimalDaysCount)
+        </dd>
+    </dl>
+    </div>
+    
+    <form asp-action="DeletePackageService" asp-route-packageid="@ViewBag.PackageId" asp-route-eventid="@ViewBag.EventId">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Details" asp-route-id="@ViewBag.PackageId" asp-route-eventid="@ViewBag.EventId">Назад</a>
+    </form>
+</div>

@@ -1,0 +1,31 @@
+﻿@using WS_CMVC_Demo.Models.UserPackagesViewModels
+@model UserSubCategoryEventViewModel
+
+@{
+    ViewData["Title"] = "Выбор категории участника";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>@Html.DisplayFor(model => model.EventTitle)</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserSubCategoryEventId" class="control-label"></label>
+                <select asp-for="UserSubCategoryEventId" class="form-control" asp-items="Model.SubCategories"></select>
+                <span asp-validation-for="UserSubCategoryEventId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Далее" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-route-eventid="@ViewBag.eventid" asp-route-userid="@ViewBag.Userid">Назад</a>
+</div>
+

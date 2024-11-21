@@ -1,0 +1,8 @@
+﻿@model IList<WS_CMVC_Demo.Models.Service.HotelOption>
+
+<select class="form-control" id="hoteloptionddl" name="HotelOptionId">
+    @foreach (var item in Model)
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>

@@ -1,0 +1,131 @@
+﻿@using WS_CMVC_Demo.Models.Service
+@model IList<UserPackageService>
+
+@{
+    ViewData["Title"] = "Детали пакета";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .inv {
+        display: none;
+    }
+</style>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Подтверждение удаления</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Вы уверены что хотите удалить бронь пакета?</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <form asp-action="Delete" asp-route-id="@ViewBag.id" asp-route-userid="@ViewBag.userid" asp-route-eventid="@ViewBag.eventid">
+                    <input type="submit" class="btn btn-outline-danger" value="Удалить заявку" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-sm-2">
+        <h4>Название</h4>
+    </div>
+    <div class="col-sm-10">
+        <h4>@Html.DisplayFor(model => model.First().PackageService.Package.Name)</h4>
+    </div>
+    <div class="col-sm-2">
+        <h4>Статус заявки</h4>
+    </div>
+    <div class="col-sm-10">
+        <h4>
+            @Html.DisplayFor(model => model.First().Status)
+            @if (Model.First().Status == UserPackageServiceStatus.accepted || Model.First().Status == UserPackageServiceStatus.contracted || Model.First().Status == UserPackageServiceStatus.completed)
+            {
+                <i class="fa fa-check text-success"></i>
+            }
+            @if (Model.First().Status == UserPackageServiceStatus.declined)
+            {
+                <i class="fa fa-times text-danger"></i>
+            }
+        </h4>
+        @if (Model.First().Status == UserPackageServiceStatus.book)
+        {
+            <h5>Заявка проходит проверку</h5>
+        }
+    </div>
+    <div class="col-12">
+        @if (Model.First().Status == UserPackageServiceStatus.draft)
+        {
+            <a asp-action="Book" asp-route-id="@ViewBag.id" asp-route-userid="@ViewBag.userid" asp-route-eventid="@ViewBag.eventid" class="btn btn-outline-success @(ViewBag.IsModerator || ViewBag.IsContracter ? "d-none" : "")">Подтвердить бронь</a>
+        }
+        <a asp-action="Accept" asp-route-id="@ViewBag.id" asp-route-userid="@ViewBag.userid" asp-route-eventid="@ViewBag.eventid" class="btn btn-outline-success @(ViewBag.IsAdmin || ViewBag.IsModerator ? "" : "d-none")">Подтвердить заявку</a>
+
+        <a asp-action="Decline" asp-route-id="@ViewBag.id" asp-route-userid="@ViewBag.userid" asp-route-eventid="@ViewBag.eventid" class="btn btn-outline-secondary @(ViewBag.IsAdmin || ViewBag.IsModerator ? "" : "d-none")">Отклонить заявку</a>
+        <a asp-action="Contract" asp-route-id="@ViewBag.id" asp-route-userid="@ViewBag.userid" asp-route-eventid="@ViewBag.eventid" class="btn btn-outline-secondary @(ViewBag.IsAdmin || ViewBag.IsContracter ? "" : "d-none")">Договор отправлен</a>
+        <a asp-action="Complete" asp-route-id="@ViewBag.id" asp-route-userid="@ViewBag.userid" asp-route-eventid="@ViewBag.eventid" class="btn btn-outline-success @(ViewBag.IsAdmin || ViewBag.IsContracter ? "" : "d-none")">Договор оплачен</a>
+
+        @if (Model.First().Status == UserPackageServiceStatus.draft || Model.First().Status == UserPackageServiceStatus.declined || ViewBag.IsAdmin)
+        {
+            <a asp-action="Edit" asp-route-id="@ViewBag.id" asp-route-userid="@ViewBag.userid" asp-route-eventid="@ViewBag.eventid" class="btn btn-outline-primary @(ViewBag.IsContracter || (ViewBag.IsModerator && !ViewBag.IsAccreditator) ? "d-none" : "")">Редактировать</a>
+            <button type="button" class="btn btn-outline-danger @(ViewBag.IsContracter || (ViewBag.IsModerator && !ViewBag.IsAccreditator) ? "d-none" : "")" data-toggle="modal" data-target="#exampleModal">Удалить заявку</button>
+        }
+    </div>
+    <div class="col">
+        <br />
+        <h5>Услуги, входящие в пакет:</h5>
+    </div>
+</div>
+
+@foreach (UserPackageService service in Model)
+{
+
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">
+            <input runat="server" type="radio" checked="checked" disabled />
+        </div>
+        <div class="col-sm-10">
+            <b>@Html.DisplayFor(model => service.PackageService.Service.Name)</b>
+            <br />
+            @Html.DisplayFor(model => service.PackageService.Service.Description)
+            <div class="@(service.PackageService.Service.ServiceType.ShowDates ? "" : "inv")">
+                <br />
+                <div class="@((service.PackageService.Service.ServiceType.Name == "Проживание") ? "inv" : "")">
+                    @Html.DisplayFor(model => service.StartDate) - @Html.DisplayFor(model => service.FinishDate) (включительно)
+                </div>
+                <div class="@((service.PackageService.Service.ServiceType.Name == "Проживание") ? "" : "inv")">
+                    @Html.DisplayFor(model => service.StartDate) 15:00 - @Html.DisplayFor(model => service.FinishDate) 12:00
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+<hr />
+<hr />
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-10">
+        <b>Предварительная стоимость пакета:</b>
+        <p>@ViewBag.Cost р.</p>
+    </div>
+</div>
+<hr />
+
+<div>
+    <br />
+    <a asp-action="Index" asp-route-eventid="@ViewBag.eventid" asp-route-userid="@ViewBag.Userid" class="@(ViewBag.IsAdmin || ViewBag.IsContracter || ViewBag.IsModerator ? "d-none" : "")"><h5>Назад</h5></a>
+    <a asp-action="RequestList" asp-route-eventid="@ViewBag.eventid" class="@(ViewBag.IsAdmin || ViewBag.IsContracter || (ViewBag.IsModerator && !ViewBag.IsAccreditator) ? "" : "d-none")"><h5>Назад</h5></a>
+    <a asp-action="AccrEdit" asp-controller="Delegation" asp-route-id="@ViewBag.UserId" class="@(ViewBag.IsAccreditator ? "" : "d-none")"><h5>Назад</h5></a>
+    <br />
+</div>

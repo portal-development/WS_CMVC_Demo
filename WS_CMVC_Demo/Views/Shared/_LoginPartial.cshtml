@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a  class="nav-link text-light mainnav" asp-controller="Manage" asp-action="Index" title="Управление профилем">ПРОФИЛЬ</a>
+    </li>
+    <li class="nav-item">
+        <form  class="nav-link form-inline" asp-controller="Account" asp-action="Logoff" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button  type="submit" class="btn btn-link text-light mainnav logoffbutton">ВЫЙТИ</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-light mainnav" asp-controller="Account" asp-action="Register">РЕГИСТРАЦИЯ</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-light mainnav" asp-controller="Account" asp-action="Login">ВХОД</a>
+    </li>
+}
+

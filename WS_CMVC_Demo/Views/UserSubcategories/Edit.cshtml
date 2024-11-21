@@ -1,0 +1,74 @@
+﻿@model             UserSubcategory
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h4>Подкатегория пользователей</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IncludeProperties" class="control-label"></label>
+                <select asp-for="IncludeProperties" class="form-control selectpicker" asp-items="new MultiSelectList(Model.ExcludebleProperties)"></select>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" asp-for="NotFreePackage">
+                    <label class="custom-control-label" asp-for="NotFreePackage">@Html.DisplayNameFor(model => model.NotFreePackage)</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="BadgeColorId" class="control-label"></label>
+                <select asp-for="BadgeColorId" class="form-control selectpicker">
+                    <option></option>
+                    @foreach(var item in (SelectList)ViewData["BadgeColorId"])
+                    {
+                        <option data-content="<code class='badge' style='background-color: @item.Text;'>@item.Text</code>">@item.Value</option>
+                    }
+                </select>
+                <span asp-validation-for="BadgeColorId" class="text-danger"></span>
+                <small class="form-text text-muted"><a asp-controller="BadgeColors" asp-action="Create">Добавить новый</a></small>
+            </div>
+            <div class="form-group">
+                <label asp-for="BadgeTextColorId" class="control-label"></label>
+                <select asp-for="BadgeTextColorId" class="form-control selectpicker">
+                    <option></option>
+                    @foreach(var item in (SelectList)ViewData["BadgeColorId"])
+                    {
+                        <option data-content="<code class='badge' style='background-color: @item.Text;'>@item.Text</code>">@item.Value</option>
+                    }
+                </select>
+                <span asp-validation-for="BadgeTextColorId" class="text-danger"></span>
+                <small class="form-text text-muted"><a asp-controller="BadgeColors" asp-action="Create">Добавить новый</a></small>
+            </div>
+            <div class="form-group">
+                <label asp-for="TitleForPrint" class="control-label"></label>
+                <input asp-for="TitleForPrint" class="form-control" />
+                <span asp-validation-for="TitleForPrint" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад к списку</a>
+</div>

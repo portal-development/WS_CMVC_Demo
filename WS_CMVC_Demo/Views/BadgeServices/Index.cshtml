@@ -1,0 +1,78 @@
+﻿@model IEnumerable<WS_CMVC_Demo.Models.Badge.BadgeService>
+
+@{
+    ViewData["Title"] = "Услуги на бейджах";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Добавить</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Пиктограмма
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CheckByPackage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PeriodType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PeriodTime)
+            </th>
+            <th>
+                Временной диапазон (для приемов пищи)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Order)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Roles)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckByPackage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PeriodType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PeriodTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecommendedStartTime) - @Html.DisplayFor(modelItem => item.RecommendedEndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Order)
+                </td>
+                <td>
+                    @string.Join(", ", item.Roles.Select(r => r.Role.Name))
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

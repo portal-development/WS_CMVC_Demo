@@ -1,0 +1,57 @@
+﻿@model WS_CMVC_Demo.Models.Service.Quota
+
+@{
+    ViewData["Title"] = "Удаление квоты";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Квота будет удалена. Убедитесь что забронированные услуги покрываются другими квотами. Вы подтверждаете удаление?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Service)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Service.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FinishDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FinishDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AvailableNum)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AvailableNum)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FixedCost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FixedCost)
+        </dd>
+    </dl>
+    
+     <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ServiceId" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-controller="Service" asp-action="Details" asp-route-id="@ViewBag.ServiceId">Назад</a>
+    </form>
+</div>

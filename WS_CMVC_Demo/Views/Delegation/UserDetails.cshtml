@@ -1,0 +1,236 @@
+﻿@using WS_CMVC_Demo.Models.Badge
+@model ApplicationUser
+
+@{
+    ViewData["Title"] = @Model.SecondName + " " + @Model.Name + " " + @Model.MiddleName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Данное действие невозможно отменить.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                <form method="post" asp-controller="BadgeServiceCheckups" asp-action="Delete">
+                    <input type="hidden" name="Id" id="bschid" />
+                    <input type="hidden" name="ReturnUrl" value="@ViewBag.thisUrl" />
+                    <input type="submit" class="btn btn-danger" value="Удалить" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <h1>Участник</h1>
+    <hr />
+    <a asp-action="UserBadge" class="btn btn-primary" asp-route-id="@Model.Id"><i class="fa fa-print" aria-hidden="true"></i> Печать бейджа</a>
+    <dl class="row">
+        <dt class="col-sm-3">
+            ФИО
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.SecondName) @Html.DisplayFor(model => model.Name) @Html.DisplayFor(model => model.MiddleName)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.UserCategory)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.UserCategory?.Title
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.UserSubcategory)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.UserSubcategory?.Title
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PassportNumber)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.PassportNumber)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.Country?.Title
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.RussiaSubject)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.RussiaSubject?.Title
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Competence)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.Competence?.Title
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.RegisterDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.RegisterDate)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.LastSigInDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.LastSigInDate)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.ArrivalDateTime)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.ArrivalDateTime)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.ArrivalDetails)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.ArrivalDetails)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DepartureDateTime)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DepartureDateTime)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.DepartureDetails)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.DepartureDetails)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.BankDetails)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.BankDetails)
+        </dd>
+    </dl>
+</div>
+@{
+    var ch = new BadgeServiceCheckup();
+}
+<hr />
+<h4>Прохождение контрольных точек участником</h4>
+<table class="table table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th>
+                @Html.DisplayNameFor(model => ch.BadgeService)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => ch.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => ch.Creator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => ch.Type)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var chekUps = (List<BadgeServiceCheckup>)ViewBag.UserCheckups;
+            var index = chekUps.Count;
+        }
+        @foreach (var item in chekUps)
+        {
+            <tr>
+                <td>
+                    @(index--)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BadgeService)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    <a asp-route-id="@item.CreateUserId">@item.Creator.CropName</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @if ((User.IsInRole("administrator") || User.IsInRole("moderator")))
+                    {
+                        if (item.Type == ServiceCheckupType.Approve)
+                        {
+                            <form method="post" asp-controller="BadgeServiceCheckups" asp-action="Cancel">
+                                <input type="hidden" name="Id" value="@item.Id" />
+                                <input type="hidden" name="ReturnUrl" value="@ViewBag.thisUrl" />
+                                <input type="submit" class="btn btn-warning btn-sm" value="Отменить" />
+                            </form>
+                        }
+                        else if (item.Type == ServiceCheckupType.Canceled)
+                        {
+                            <form method="post" asp-controller="BadgeServiceCheckups" asp-action="ReCancel">
+                                <input type="hidden" name="Id" value="@item.Id"/>
+                                <input type="hidden" name="ReturnUrl" value="@ViewBag.thisUrl" />
+                                <input type="submit" class="btn btn-info btn-sm" value="Вернуть" />
+                            </form>
+                        }
+                    }
+                </td>
+                <td>
+                    @if ((User.IsInRole("administrator") || User.IsInRole("moderator")))
+                    {
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal" data-whatever="@item.Id" title="Удалить отметку о прохождении контрольной точки">Удалить</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+<script type="text/javascript">
+    $('#exampleModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget);
+      var recipient = button.data('whatever');
+      var modal = $(this)
+      modal.find('.modal-title').text('Вы действительно хотите удалить отметку о прохождении контрольной точки # ' + recipient)
+      modal.find('#bschid').val(recipient)
+    })
+</script>
+}

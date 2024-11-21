@@ -1,0 +1,82 @@
+﻿@using WS_CMVC_Demo.Models.AccountViewModels
+@model GoldMemberViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> ExProp = ViewBag.ExcludeProp ?? new List<string>();
+}
+
+<h2>@ViewData["Title"]</h2>
+<h4>Категория: @ViewData["UserCategory"]</h4>
+<hr />
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group row">
+    <label asp-for="UserSubcategoryId" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <select asp-for="UserSubcategoryId" class="form-control" asp-items="ViewBag.UserSubcategoryId"></select>
+        <span asp-validation-for="UserSubcategoryId" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row @(ExProp.Contains(nameof(Model.CountryId)) ? "d-none" : null)">
+    <label asp-for="CountryId" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <select asp-for="CountryId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.CountryId"></select>
+    </div>
+</div>
+<div class="form-group row @(ExProp.Contains(nameof(Model.RussiaSubjectId)) ? "d-none" : null)">
+    <label asp-for="RussiaSubjectId" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <select asp-for="RussiaSubjectId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.RussiaSubjectId"></select>
+    </div>
+</div>
+<div class="form-group row @(ExProp.Contains(nameof(Model.CompetenceId)) ? "d-none" : null)">
+    <label asp-for="CompetenceId" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <select asp-for="CompetenceId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.CompetenceId"></select>
+    </div>
+</div>
+<div class="form-group row @(ExProp.Contains(nameof(Model.CompanyName)) ? "d-none" : null)">
+    <label asp-for="CompanyName" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="CompanyName" class="form-control" />
+        @*@Html.TextBoxFor(m => m.CompanyName, ExProp.Contains(nameof(Model.CompanyName)) ? (object)new { @class = "form-control", @disabled = "disabled" } : new { @class = "form-control" })*@
+        <span asp-validation-for="CompanyName" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label asp-for="SecondName" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="SecondName" class="form-control" />
+        <span asp-validation-for="SecondName" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Name" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="MiddleName" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="MiddleName" class="form-control" />
+        <span asp-validation-for="MiddleName" class="text-danger"></span>
+    </div>
+</div>
+    <div class="form-group row">
+        <div class="offset-md-2 col-md-10">
+            <input type="submit" class="btn btn-outline-dark" value="Записать" />
+        </div>
+    </div>
+</form>
+
+    <a asp-controller="AdminPanel" asp-action="Index">Назад</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ExcludePropScriptPartial");
+    }
+}

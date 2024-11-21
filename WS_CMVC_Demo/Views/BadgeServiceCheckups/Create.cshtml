@@ -1,0 +1,161 @@
+﻿@using WS_CMVC_Demo.Models.Badge
+@model BadgeService
+
+@{
+    ViewData["Title"] = @Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int Type = ViewBag.Type;
+}
+@if (Model.RecommendedStartTime.HasValue || Model.RecommendedEndTime.HasValue)
+{
+    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true" data-timestart="@Model.RecommendedStartTime" data-timeend="@Model.RecommendedEndTime">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alertModalLabel">ВНИМАНИЕ!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">Неподходящее время для контрольной точки "@Model.Title"<br /><a asp-action="Start">Смените тип проверяемой контрольной точки.</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="modal fade" id="checkModal" tabindex="-1" aria-labelledby="checkModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkModalLabel">Статус отметки</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="spinner">
+                    <div class="d-flex justify-content-center" style="display:none;">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="check_body"></div>
+            </div>
+            <div class="modal-footer">
+                <form id="check_form" method="post" data-ajax="true" data-ajax-method="post" data-ajax-update="#check_body" data-ajax-loading="#spinner" data-ajax-complete="completed" data-ajax-failure="failed">
+                    <input type="hidden" name="userId" id="userId" /><br>
+                </form>
+                <button id="btn_next" type="button" class="btn btn-lg btn-info btn-block" data-dismiss="modal">Следующий</button>
+            </div>
+        </div>
+    </div>
+</div>
+<h3 class="text-center mt-3">@if (Model != null)
+    {
+        if (!string.IsNullOrEmpty(Model.IcoUrl))
+        {
+            <img src="@Model.IcoUrl" style="height: 2.5rem;" title="@Model.Title (@(EnumHelper<BadgeServicePeriodType>.GetDisplayValue(Model.PeriodType)))" />
+        }
+        <span class="small" title="@Model.Title (@(EnumHelper<BadgeServicePeriodType>.GetDisplayValue(Model.PeriodType)))">@Model.Title</span>
+    }</h3>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link @(Type == 1 ? "active" : null)" href="@(ViewBag.Id)?t=1"><i class="fa fa-camera"></i> Камера</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Type == 2 ? "active" : null)" href="@(ViewBag.Id)?t=2"><i class="moon moon-scanner-gun"></i> Считыватель</a>
+    </li>
+</ul>
+@if (Type == 1)
+{
+    <div id="reader" width="400px"></div>
+}
+else
+{
+    <div class="card text-center">
+        <h4 class="mt-3">Использование аппаратного считывателя кодов</h4>
+        <h1 class="display-1"><i class="moon moon-scanner-gun"></i></h1>
+        <div class="alert alert-info mx-3">Для работы считывателя держите активной эту вкладку в браузере</div>
+    </div>
+}
+
+@section Scripts {
+<script src="~/lib/html5-qrcode/html5-qrcode.min.js"></script>
+<script type="text/javascript">
+    completed = function () {
+        $('#btn_next').prop('disabled', false);
+    };
+
+    failed = function (xhr) {
+        $('#check_body').text(`Status: ${xhr.status}, Status Text: ${xhr.statusText}`);
+    };
+
+    function CheckTime() {
+        var dt = new Date();
+        var time = To2(dt.getHours())+':'+To2(dt.getMinutes())+':'+To2(dt.getSeconds())
+        var model = $('#alertModal');
+        if(model.data('timestart') > time){
+            model.modal('show');
+        }
+        else if(model.data('timeend') < time){
+            model.modal('show');
+        }
+    }
+
+    function To2(val) {
+        return (val < 10 ? "0" + val : val);
+    }
+
+    $('#checkModal').on('hidden.bs.modal', function (event) {
+        if(typeof Scanner !== "undefined") {
+            Scanner.resume();
+        }
+        CheckTime();
+    });
+
+    function checkUid(uid) {
+        var modal = $('#checkModal');
+        modal.find('#userId').val(uid);
+        modal.find('#check_body').html('');
+        modal.find('#btn_next').prop('disabled', true);
+        $('#check_form').submit();
+        modal.modal('show');
+    }
+
+    $(document).ready(function(){
+        CheckTime();
+        if(@Type != 1) {
+            var text = '';
+            document.onkeypress = function(e) {
+                if(e.code.substr(0, 5) == 'Digit') {
+                    text += e.code.substring(5, 6);
+                } else if(e.code.substr(0, 3) == 'Key') {
+                    text += e.code.substring(3, 4);
+                } else if(e.code == 'Enter') {
+                    var n = text.length - 32;
+                    text = text.substring(n);
+                    if(text.length == 32 && text[12] == '4') {
+                        checkUid(text);
+                    }
+                }
+            };
+        }
+    });
+
+    function onScanSuccess(decodedText, decodedResult) {
+        Scanner.pause();
+        var uid = decodedText.substr(decodedText.length - 36);
+        checkUid(uid);
+    }
+    let Scanner;
+    if(@Type == 1) {
+        Scanner = new Html5QrcodeScanner(
+            "reader",
+            { fps: 10 },
+            /* verbose= */ false);
+        Scanner.render(onScanSuccess);
+    }
+</script>
+}

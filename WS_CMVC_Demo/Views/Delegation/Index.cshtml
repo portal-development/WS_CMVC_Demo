@@ -1,0 +1,130 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+    ViewData["Title"] = "Моя делегация";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isGenBankDetails = Model.Any(u => u.IsGeneralBankDetails); //Одни реквизиты на всю делегацию
+    var isAnyNotFreePackage = Model.Any(u => u.UserSubcategory.NotFreePackage); //Одни реквизиты на всю делегацию
+}
+<div class="row">
+    <div class="col-sm-10">
+        <h1>@ViewData["Title"]</h1>
+        <h4>Категория: @ViewData["UserCategory"]</h4>
+        <p class="@(ViewBag.IsAccreditator ? "d-none" : "")">
+            <a asp-action="Create">Добавить члена делегации</a>
+        </p>
+    </div>
+    <div class="col-sm-2">
+        <br />
+        <a asp-action="DownloadManual" class="btn btn-outline-success">Скачать инструкцию</a>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserSubcategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CropName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassportNumber)
+            </th>
+            <th>Пакеты</th>
+            <th>Данные о прибытии</th>
+            @if (isAnyNotFreePackage)
+            {
+                <th>Реквизиты для договора</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.CanEdit((Guid)ViewData["userId"]))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a>
+                    }
+                    @if (item.CanDelete((Guid)ViewData["userId"]))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserSubcategory.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    +@Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    <span title="@item.SecondName @item.Name @item.MiddleName">@item.CropName</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PassportNumber)
+                </td>
+                <td>
+                    @if (item.PackageServices.Any())
+                    {
+                        <i class="fa fa-check text-success" aria-hidden="true"></i>
+                    }
+                    @if (item.CanEdit((Guid)ViewData["userId"]))
+                    {
+                        <a asp-controller="UserPackages" asp-action="Index" class="@(item.PackageServices.Any() ? "text-success" : null)" asp-route-userid="@item.Id">Бронь пакета</a>
+                    }
+                </td>
+                <td>
+                    @if (item.CanEdit((Guid)ViewData["userId"]) && item.PackageServices.Any())
+                    {
+                        @if (item.ArrivalDateTime.HasValue)
+                        {
+                            <a asp-action="ArrivalEdit" asp-route-id="@item.Id" class="text-success" title="Редактировать данные о прибытии">@item.ArrivalDateTime<br />@item.DepartureDateTime</a>
+                        }
+                        else
+                        {
+                            <a asp-action="ArrivalEdit" asp-route-id="@item.Id" title="Заполнить данные о прибытии">Заполнить</a>
+                        }
+                    }
+                    else
+                    {
+                        @item.ArrivalDateTime
+                        <br />
+                        @item.DepartureDateTime
+                    }
+                </td>
+                <td>
+                    @if (!isGenBankDetails || item.IsGeneralBankDetails)
+                    {
+                        @if (item.CanEdit((Guid)ViewData["userId"]) && item.PackageServices.Any() && item.UserSubcategory.NotFreePackage)
+                        {
+                            @if (!string.IsNullOrEmpty(item.BankDetails))
+                            {
+                                <a asp-action="BankDetailsEdit" asp-route-id="@item.Id" class="text-success" title="Редактировать реквизиты для договора"><i class="fa fa-check text-success" aria-hidden="true"></i>Изменить</a>
+                            }
+                            else
+                            {
+                                <a asp-action="BankDetailsEdit" asp-route-id="@item.Id" title="Заполнить реквизиты для договора">Заполнить</a>
+                            }
+                        }
+                        else if (item.BankDetails!=null)
+                        {
+                            <i class="fa fa-check text-success" aria-hidden="true"></i>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

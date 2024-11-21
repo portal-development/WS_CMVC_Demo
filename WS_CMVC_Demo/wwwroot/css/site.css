@@ -1,0 +1,113 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    font-family: Mayak_Light;
+}
+
+.navbar-brand {
+    font-family: Mayak_Bold;
+}
+
+.moon {
+    display: inline-block;
+    font: normal normal normal 14px/1 icomoon2;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.moon-scanner-gun:before {
+    content: "\f488";
+}
+
+@font-face {
+    font-family: 'icomoon2';
+    src: url('/fonts/icomoon2.ttf');
+}
+
+@font-face {
+    font-family: 'Mayak_Bold';
+    src: url('/fonts/Mayak_Bold.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Condensed';
+    src: url('/fonts/Mayak_Condensed.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Condensed-Light';
+    src: url('/fonts/Mayak_Condensed-Light.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Condensed-Medium';
+    src: url('/fonts/Mayak_Condensed-Medium.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Extended';
+    src: url('/fonts/Mayak_Extended.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Extended-Bold';
+    src: url('/fonts/Mayak_Extended-Bold.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Extended-Light';
+    src: url('/fonts/Mayak_Extended-Light.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Extended-Medium';
+    src: url('/fonts/Mayak_Extended-Medium.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Light';
+    src: url('/fonts/Mayak_Light.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Medium';
+    src: url('/fonts/Mayak_Medium.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Regular';
+    src: url('/fonts/Mayak_Regular.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Ultra-Condensed';
+    src: url('/fonts/Mayak_Ultra-Condensed.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Ultra-Condensed-Light';
+    src: url('/fonts/Mayak_Ultra-Condensed-Light.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Ultra-Condensed-Thin';
+    src: url('/fonts/Mayak_Ultra-Condensed-Thin.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Ultra-Extended';
+    src: url('/fonts/Mayak_Ultra-Extended.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Ultra-Extended-Bold';
+    src: url('/fonts/Mayak_Ultra-Extended-Bold.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Ultra-Extended-Light';
+    src: url('/fonts/Mayak_Ultra-Extended-Light.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Mayak_Ultra-Extended-Medium';
+    src: url('/fonts/Mayak_Ultra-Extended-Medium.otf') format('opentype');
+}

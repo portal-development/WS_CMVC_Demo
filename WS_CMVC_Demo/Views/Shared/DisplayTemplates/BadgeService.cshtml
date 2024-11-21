@@ -1,0 +1,3 @@
+﻿@using WS_CMVC_Demo.Models.Badge
+@model BadgeService
+@if(Model != null) {if (!string.IsNullOrEmpty(Model.IcoUrl)) { <img src="@Model.IcoUrl" style="height: 2.5rem;" title="@Model.Title (@(EnumHelper<BadgeServicePeriodType>.GetDisplayValue(Model.PeriodType)))" /> } else { <span title="@Model.Title (@(EnumHelper<BadgeServicePeriodType>.GetDisplayValue(Model.PeriodType)))">@Model.Title</span> }}

@@ -1,0 +1,61 @@
+﻿@model List<WS_CMVC_Demo.Models.Event>
+
+@{
+    ViewData["Title"] = "Выбор мероприятия";
+}
+
+<style>
+    .item-link {
+        color: black;
+    }
+
+        .item-link > .card > .card-header {
+            color: black;
+        }
+
+        .item-link:hover,
+        .item-link:hover > .card > .card-header {
+            color: black;
+        }
+
+            .item-link:hover > .card > .card-header {
+                background-color: #169db2;
+            }
+
+            .item-link:hover > .card > .card-body {
+                background-color: #17a2b8;
+            }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+
+@for (int i = 0; i < Math.Ceiling(Model.Count() / 2.0); i++)
+{
+    <div class="row px-2">
+        @for (int j = 0; j < 2 && i * 2 + j < Model.Count(); j++)
+        {
+            var item = Model[i * 2 + j];
+            <div class="col-md-6 p-2">
+                <a asp-action="List" asp-route-eventid="@item.Id" class="text-decoration-none item-link">
+                    <div class="card border-info">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <h4>@item.Title</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row card-text">
+                                <dt class="col-md-5">Сроки</dt>
+                                <dd class="col-md-7">@Html.DisplayFor(modelItem => item.DateStart) - @Html.DisplayFor(modelItem => item.DateEnd)</dd>
+                            </dl>
+                        </div>
+                   </div>
+                </a>
+            </div>
+        }
+    </div>
+}
+<a asp-controller="AdminPanel" asp-action="Index">Назад</a>

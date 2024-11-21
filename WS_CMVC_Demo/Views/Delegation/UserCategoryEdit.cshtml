@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "Изменение категории участника";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<h4>Выберите категорию участника</h4>
+<form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <select class="form-control" asp-items="ViewBag.Category" name="categoryddl"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+</form>

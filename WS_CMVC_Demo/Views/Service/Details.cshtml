@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WS_CMVC_Demo.Models.Service.Quota>
+
+@{
+    ViewData["Title"] = "Квоты";
+}
+
+<h1>@ViewData["Title"]</h1>
+<h2>Услуга: @ViewBag.ServiceName</h2>
+
+<p>
+    <a asp-controller="Quotas" asp-action="Create" asp-route-id="@ViewBag.ServiceId" class="btn btn-sm btn-outline-success">Добавить</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Service)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinishDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailableNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FixedCost)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Service.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinishDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableNum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FixedCost)
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a asp-controller="Quotas" asp-action="Edit" asp-route-id="@item.Id" asp-route-serviceid="@ViewBag.ServiceId" class="btn btn-sm btn-outline-primary">Изменить</a> 
+                    <a asp-controller="Quotas" asp-action="Delete" asp-route-id="@item.Id" asp-route-serviceid="@ViewBag.ServiceId" class="btn btn-sm btn-outline-danger">Удалить</a>
+                </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">Назад</a>
+</div>

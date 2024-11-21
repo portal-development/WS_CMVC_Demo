@@ -1,0 +1,77 @@
+﻿@using WS_CMVC_Demo.Models.ManageViewModels
+@model UserBankDetailsViewModel
+@{
+    ViewData["Title"] = "Реквизиты для договора";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h4>@ViewData["UserFIO"]</h4>
+<hr />
+<div class="row">
+    <div class="col-lg-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BankDetails" class="control-label"></label>
+                @Html.TextAreaFor(model => model.BankDetails, new { @rows = 30, @class = "form-control" })
+                <span asp-validation-for="BankDetails" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsGeneralBankDetails" /> @Html.DisplayNameFor(model => model.IsGeneralBankDetails)
+                </label>
+            </div>
+            <div class="form-group row">
+                <div class="offset-md-2 col-md-10">
+                    <input type="submit" class="btn btn-outline-dark" value="Записать" />
+                </div>
+            </div>
+        </form>
+        @using (Html.BeginForm("BankDetailsDelete", "Delegation", new { id = ViewData["id"] }, FormMethod.Post, true, null))
+        {
+            <div class="form-group row">
+                <div class="offset-md-2 col-md-10">
+                    <input type="submit" class="btn btn-outline-danger" value="Очистить" onclick="return confirm('Вы действительно хотите очистить реквизиты для договора?');" />
+                </div>
+            </div>
+        }
+        <div>
+            <a asp-action="Index">Назад</a>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Пример для юридического лица:</h5>
+                <p class="card-text">
+                    ГБПОУ РМ «Саранский строительный техникум»<br />
+                    430017, Республика Мордовия, г. Саранск, ул. Веселовского, д. 3<br />
+                    Тел: 8-8342-75-61-56<br />
+                    ИНН/КПП 1327153575/132701001<br />
+                    УФК по Республике Мордовия<br />
+                    (ГБПОУ РМ, л/с 20096Ш11370)<br />
+                    Каз./сч. 03224643890000000900<br />
+                    Кор.сч. 40102810345370000076<br />
+                    Отделение НБ Республика Мордовия Банка России//УФК по Республике Мордовия г.Саранск<br />
+                    БИК 018952501
+                </p>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Пример для физического лица:</h5>
+                <p class="card-text">
+                    Смирнов Игорь Евгеньевич<br />
+                    паспорт 8908 545054, выдан Отделением УФМС России по Курской области в Курчатовском районе 22.04.2008 г., код подразделения 460-021<br />
+                    адрес места жительства: Республика Мордовия, г. Саранск, ул. Гагарина, д. 106, кв. 8<br />
+                    дата рождения 21.05.1963 г.<br />
+                    основное место работы ООО «ТЕХНОРЕСТ», г. Москва<br />
+                    № пенсионного страхового свидетельства 031-002-49394<br />
+                    ИНН физического лица 461200921071<br />
+                    Тел. +79279998877
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

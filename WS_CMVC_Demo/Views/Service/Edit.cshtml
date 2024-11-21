@@ -1,0 +1,97 @@
+﻿@model WS_CMVC_Demo.Models.Service.Service
+
+@{
+    ViewData["Title"] = "Редактирование услуги";
+}
+<style>
+    .inv {
+        display: none;
+    }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ServiceType" class="control-label"></label>
+                <select asp-for="ServiceTypeId" class="form-control" asp-items="ViewBag.ServiceTypes"></select>
+                <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div id="hotelchange" class="@(ViewBag.IsHotel == true ? "" : "inv")">
+                <div class="form-group">
+                    Отель
+                    @Html.DropDownList("Hotel", ViewBag.Hotels as SelectList, new { @class="form-control", id="hotelddl" })
+                </div>
+                <div class="form-group">
+                    Вариант размещения
+                    <select asp-for="HotelOptionId" class="form-control" asp-items="ViewBag.HotelOptions" id="hoteloptionddl"></select>
+                    <span asp-validation-for="HotelOptionId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="BadgeServiceId" class="control-label"></label>
+                <select asp-for="BadgeServiceId" class="form-control" asp-items="ViewBag.BadgeServices">
+                    <option></option>
+                </select>
+                <span asp-validation-for="BadgeServiceId" class="text-danger"></span>
+                <small class="form-text text-muted"><a asp-controller="BadgeColors" asp-action="Create">Добавить новый</a></small>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" value="@ViewBag.LivingId" id="livingid" />
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад</a>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+    $(function () {
+
+        $('#hotelddl').change(function()
+        {
+            // получаем выбранный id
+            var hotid = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetHotelOptions")/' + hotid,
+                success: function (data) {
+
+                    // заменяем содержимое присланным частичным представлением
+                    $('#hoteloptionddl').replaceWith(data);
+                }
+            });
+        });
+        $('#ServiceTypeId').change(function()
+        {
+            // получаем выбранный id
+            var servid = $(this).val();
+            var livid = $('#livingid').val();
+            if(servid == livid){
+                $('#hotelchange').removeClass('inv');
+            }
+            else{
+                $('#hotelchange').addClass('inv');
+            }
+        });
+    })
+</script>
+}

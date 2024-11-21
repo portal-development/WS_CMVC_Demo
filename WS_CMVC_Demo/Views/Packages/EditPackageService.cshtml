@@ -1,0 +1,88 @@
+﻿@model WS_CMVC_Demo.Models.Service.PackageService
+
+@{
+    ViewData["Title"] = "Редактирование услуги в пакете";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPackageService" asp-route-packageid="@ViewBag.PackageId" asp-route-eventid="@ViewBag.EventId">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.Service.ServiceType)
+                <br/>
+                @Html.DisplayFor(model => model.Service.ServiceType.Name)
+            </div>
+            <div class="form-group">
+                @Html.DisplayNameFor(model => model.Service)
+                <br/>
+                @Html.DisplayFor(model => model.Service.Name)
+            </div>
+            
+            <div class="form-group">
+                <div id="quotas">
+                    <p>Доступные квоты</p>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <td>
+                                Начало
+                            </td>
+                            <td>
+                                Конец
+                            </td>
+                            <td>
+                               Квота
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                @foreach (var quota in Model.Service.Quotas) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => quota.StartDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => quota.FinishDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => quota.AvailableNum)
+                            </td>
+                        </tr>
+                }
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FinishDate" class="control-label"></label>
+                <input asp-for="FinishDate" class="form-control" />
+                <span asp-validation-for="FinishDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinimalDaysCount" class="control-label"></label>
+                <input asp-for="MinimalDaysCount" class="form-control" />
+                <span asp-validation-for="MinimalDaysCount" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="PackageId" />
+            <input type="hidden" asp-for="ServiceId" />
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details" asp-route-id="@ViewBag.PackageId" asp-route-eventid="@ViewBag.EventId">Назад</a>
+</div>
+

@@ -1,0 +1,43 @@
+﻿@using WS_CMVC_Demo.Models.UserPackagesViewModels
+@model List<UserPackageViewModel>
+
+@{
+    ViewData["Title"] = "Выбор пакета";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .greentext{
+        color: green;
+    }
+</style>
+<h1>@ViewBag.Title</h1>
+@if(!Model.Any()){
+    <h4>К сожалению, нет доступных пакетов</h4>
+}
+@foreach(UserPackageViewModel package in Model)
+{
+    <div class="jumbotron">
+    <div class="row">
+        <div class="col-md-6 col-xs-12">
+            <div class='@(package.Choosed ? "" : "inv")'>
+                <p class="greentext">Вы выбрали данный пакет</p>
+            </div>
+            <h2>@package.PackageName @(package.Fixed ? "(фиксированный)" : "(настраиваемый)")</h2>
+            <h4>@package.PackageDescription</h4>
+            <h4>Доступно: @Html.DisplayFor(s => package.FreePackagesCount)</h4>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            @foreach(var service in package.Services)
+            {
+                <input runat="server" type="radio" value="@(service.ServiceId)RB" id="@service.ServiceId" name="@(service.RadioGroupName)@(package.PackageId)"  @(service.RadioChecked ? "checked" : "") @(!service.RadioEnabled ? "disabled" : "") />@service.ServiceName
+                <br/>
+            }
+            <a asp-action="Edit" asp-route-eventid="@ViewBag.eventid" asp-route-userid="@ViewBag.Userid" asp-route-id="@package.PackageId" class="btn btn-outline-success">Подробнее</a>
+        </div>
+    </div>
+    </div>
+}
+    <a asp-action="Index" asp-route-eventid="@ViewBag.eventid" asp-route-userid="@ViewBag.Userid">Назад</a>
+
+
+

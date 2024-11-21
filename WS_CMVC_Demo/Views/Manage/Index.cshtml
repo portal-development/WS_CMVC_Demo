@@ -1,0 +1,113 @@
+﻿@model IndexViewModel
+@{
+    ViewBag.Title = "Управление профилем";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (!string.IsNullOrEmpty(ViewBag.StatusMessage))
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @ViewBag.StatusMessage
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<h4>
+    [
+    @if (Model.HasPassword)
+    {
+        <text><a asp-controller="Manage" asp-action="ChangePassword">Сменить пароль</a></text>
+    }
+    else
+    {
+        <text><a asp-controller="Manage" asp-action="SetPassword">Задать пароль</a></text>
+    }
+    ]
+</h4>
+
+    @if (ViewBag.IsAdmin)
+    {
+        <h4>[ <text><a asp-controller="AdminPanel" asp-action="Index">Панель администратора</a></text> ]</h4>
+    }
+    
+<hr />
+<h4 class="mb-4">Общая информация <small><a class="text-nowrap" href="@Url.Action("Edit")"><i class="fa fa-edit"></i> Редактировать</a></small></h4>
+@{ await Html.RenderPartialAsync("_UserInfoPartial", Model.User); }
+@if (Model.CurrentLogins.Count > 0)
+{
+    <h4>Связанные аккаунты</h4>
+
+    @foreach (var account in Model.CurrentLogins)
+    {
+        <div>
+            <div class="btn btn-dark disabled"><b>@account.ProviderDisplayName</b></div>
+            @if (ViewBag.ShowRemoveButton)
+            {
+                <form asp-controller="Manage" asp-action="RemoveLogin" method="post" class="d-inline-block" role="form">
+                    <input name="loginProvider" value="@account.LoginProvider" type="hidden" />
+                    <input name="providerKey" value="@account.ProviderKey" type="hidden" />
+                    <input type="submit" class="btn btn-danger" value="X" title="Открепить @account.ProviderDisplayName аккаунт" />
+                </form>
+            }
+        </div>
+    }
+}
+@if (Model.OtherLogins.Any())
+{
+    <h4>Привяжите сторонние аккаунты, для быстрого входа.</h4>
+    <hr />
+    <form asp-controller="Manage" asp-action="LinkLogin" method="post" class="form-horizontal" role="form">
+        <div id="socialLoginList">
+            <p>
+                @foreach (var p in Model.OtherLogins)
+                {
+                    <button type="submit" class="btn btn-dark" id="@p.Name" name="provider" value="@p.Name" title="Привязать @p.DisplayName аккаунт">@p.DisplayName</button>
+                }
+            </p>
+        </div>
+    </form>
+}
+
+@section Scripts {
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script type="text/javascript">
+        $('#upload').change(function () {
+            $(this).closest('form').submit();
+        });
+
+        function avBegin() {
+            $('#file').addClass('d-none');
+            $('#progressbar').removeClass('d-none');
+            $('#progressbar .progress-bar').attr('aria-valuenow', '25');
+            $('#progressbar .progress-bar').css('width', '25%');
+        };
+
+        function avComplete() {
+            $('#progressbar .progress-bar').attr('aria-valuenow', '75');
+            $('#progressbar .progress-bar').css('width', '75%');
+        };
+
+        function avSuccess(data) {
+            var image = new Image();
+
+            image.onload = function () {
+                var href = $('.avatar-link');
+                $(href).attr('href', data.s.Path);
+
+                var img = $(href).children('img');
+                $(img).attr('src', data.h.Path);
+
+                $('#progressbar .progress-bar').attr('aria-valuenow', '0');
+                $('#progressbar .progress-bar').css('width', '0%');
+                $('#progressbar').addClass('d-none');
+                $('#file').removeClass('d-none');
+            };
+
+            image.src = data.h.Path;
+        };
+    </script>
+}

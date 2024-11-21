@@ -1,0 +1,69 @@
+﻿@model WS_CMVC_Demo.Models.Badge.BadgeService
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h4>Услуга на бейдже (пиктограмма)</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order" class="control-label"></label>
+                <input asp-for="Order" class="form-control" />
+                <span asp-validation-for="Order" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IcoUrl" class="control-label"></label>
+                <input asp-for="IcoUrl" class="form-control" />
+                <span asp-validation-for="IcoUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" asp-for="CheckByPackage">
+                    <label class="custom-control-label" asp-for="CheckByPackage">@Html.DisplayNameFor(model => model.CheckByPackage)</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PeriodType" class="control-label"></label>
+                <select asp-for="PeriodType" class="form-control" asp-items="Html.GetEnumSelectList(typeof(WS_CMVC_Demo.Models.Badge.BadgeServicePeriodType))"></select>
+                <span asp-validation-for="PeriodType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PeriodTime" class="control-label"></label>
+                <input type="time" asp-for="PeriodTime" class="form-control" />
+                <span asp-validation-for="PeriodTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecommendedStartTime" class="control-label"></label>
+                <input type="time" asp-for="RecommendedStartTime" class="form-control" />
+                <span asp-validation-for="RecommendedStartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecommendedEndTime" class="control-label"></label>
+                <input type="time" asp-for="RecommendedEndTime" class="form-control" />
+                <span asp-validation-for="RecommendedEndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Roles" class="control-label"></label>
+                <select multiple="multiple" name="Roles" id="Roles" class="form-control selectpicker" asp-items="ViewBag.Roles"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Назад к списку</a>
+</div>

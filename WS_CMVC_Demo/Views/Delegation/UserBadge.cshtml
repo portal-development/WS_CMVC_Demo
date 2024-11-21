@@ -1,0 +1,112 @@
+﻿@model List<WS_CMVC_Demo.Models.UsersViewModels.BadgeViewModel>
+
+<link rel="stylesheet" href="~/css/badge.css" asp-append-version="true" />
+
+<div class="d-print-none">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Внимание!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Если бейдж был отправлен на печать, перед закрытием данной страницы обязательно нажмите на кнопку "Бейдж напечатан"
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Понятно</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-toolbar my-2" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+            <div class="btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" id="switch1">Показывать фон
+                </label>
+            </div>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+            <button type="button" id="printwith" class="btn btn-dark"><i class="fa fa-print" aria-hidden="true"></i> с фоном</button>
+            <button type="button" id="printwithout" class="btn btn-outline-dark"><i class="fa fa-print" aria-hidden="true"></i> без фона</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="Third group">
+            <form asp-action="UserBadge" id="formprintered">
+                @foreach (var item in Model)
+                {
+                    <input type="hidden" name="Ids" value="@item.Id" />
+                }
+                <button type="button" class="btn btn-success" id="printed">Бейдж напечатан</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div style="page-break-after:always;">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        if ((i > 0 && (i % 2 == 0)) || (bool)ViewBag.SingleBadge)
+        {
+            @Html.Raw("</div><div style='page-break-after:always;'>")
+            ;
+        }
+        <partial name="_BadgePartial" model="Model[i]" />
+    }
+</div>
+
+@section Scripts {
+<script src="~/lib/easyqrcodejs/dist/easy.qrcode.min.js"></script>
+<script type="text/javascript">
+    function alert(e) {
+        $('#exampleModal').modal('show');
+        var confirmationMessage = "\o/";
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage;
+    }
+    window.addEventListener("beforeunload", alert);
+
+    $('#printed').click(function() {
+        window.removeEventListener("beforeunload", alert);
+        $('#formprintered').submit();
+    });
+
+    $('#switch1').change(function() {
+        if($(this).is(':checked')) {
+            $('.hid').css('visibility', 'visible');
+        }
+        else {
+            $('.hid').css('visibility', 'hidden');
+        }
+    });
+
+    $('#printwith').click(function() {
+        $('#switch1').prop('checked', true);
+        $('.hid').css('visibility', 'visible');
+        window.print();
+    });
+
+    $('#printwithout').click(function() {
+        $('#switch1').prop('checked', false);
+        $('.hid').css('visibility', 'hidden');
+        window.print();
+    });
+
+    $('.qrcode').each(function () {
+        var userid = $(this).data('userid');
+        if(userid.length > 0)
+        {
+            var options = {
+                text: 'https://ws.mrsu.ru/' + userid,
+                correctLevel : QRCode.CorrectLevel.L,
+                width: 140,
+                height: 140
+            };
+
+            new QRCode(this, options);
+        }
+    });
+</script>
+}

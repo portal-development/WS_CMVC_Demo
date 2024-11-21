@@ -1,0 +1,50 @@
+﻿@model List<WS_CMVC_Demo.Models.Service.Package>
+
+@{
+    ViewData["Title"] = "Пакеты";
+}
+<style>
+    .greentext{
+        color: green;
+    }
+</style>
+
+<h1>@ViewBag.Title</h1>
+
+@if(!Model.Any()){
+    <h4>К сожалению, нет доступных пакетов</h4>
+}
+
+<p>
+<a asp-action="Create" asp-route-eventid="@ViewBag.EventId" class="btn btn-sm btn-outline-success">Добавить пакет</a></p>
+
+@foreach(var package in Model)
+{
+
+
+    <div class="card">
+    
+        <div class="card-body">
+            <div class="row">
+        <div class="col-md-6 col-xs-12">
+            <h2 class="card-title">@package.Name</h2>
+                    @foreach(var item in package.UserSubcategoryEventPackages)
+                    {
+                        <h5>@item.UserSubcategoryEvent.UserSubcategoryCategory.Category.Title - @item.UserSubcategoryEvent.UserSubcategoryCategory.Title</h5>
+                    }
+                    <a asp-action="Details" asp-route-eventid="@ViewBag.eventid" asp-route-id="@package.Id" class="btn btn-outline-success">Подробнее</a>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <ul>
+            @foreach(var service in package.PackageServices)
+            {
+                <li>@service.Service.Name</li>
+            }
+            </ul>
+        </div>
+        </div>
+    </div>
+    </div>
+}
+    <a asp-action="Index" asp-route-eventid="@ViewBag.eventid" asp-route-userid="@ViewBag.Userid">Назад</a>
+    <hr/>

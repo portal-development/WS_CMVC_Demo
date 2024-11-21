@@ -1,0 +1,147 @@
+﻿@using WS_CMVC_Demo.Models.Badge
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model SearchRequestBadgeServiceCheckupViewModel
+
+@{
+    ViewData["Title"] = "История прохождения контрольных точек";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var paginationOptions = new PagedListRenderOptions()
+            {
+                PageClasses = new string[] { "page-link" },
+                LiElementClasses = new[] { "page-item" },
+                UlElementClasses = new[] { "pagination", "justify-content-center" },
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always
+            };
+}
+
+<h2>@ViewData["Title"] <a asp-action="Index" class="btn btn-outline-info ">Сбросить фильтры</a></h2>
+<form method="get" id="search">
+    <form>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select asp-for="BadgeServiceId" asp-items="@ViewBag.BadgeServiceId" class="form-control auto-submit">
+                        <option value="">- @Html.DisplayNameFor(m => m.BadgeServiceId) -</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select asp-for="Type" class="form-control auto-submit" asp-items="Html.GetEnumSelectList<ServiceCheckupType>()">
+                        <option value="">- @Html.DisplayNameFor(m => m.Type) -</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input asp-for="Searchstring" placeholder="@Html.DisplayNameFor(m => m.Searchstring)" class="form-control" />
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input asp-for="DateStart" placeholder="@Html.DisplayNameFor(m => m.DateStart)" title="@Html.DisplayNameFor(m => m.DateStart)" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input asp-for="DateEnd" placeholder="@Html.DisplayNameFor(m => m.DateEnd)" title="@Html.DisplayNameFor(m => m.DateEnd)" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select asp-for="UserSubcategoryId" asp-items="@ViewBag.UserSubcategoryId" title="- @Html.DisplayNameFor(m => m.UserSubcategoryId) -" class="form-control selectpicker show-tick" data-selected-text-format="count" data-live-search="true"></select>
+                </div>
+                <div class="form-group">
+                    <select asp-for="CountryId" asp-items="@ViewBag.CountryId" title="- @Html.DisplayNameFor(m => m.CountryId) -" class="form-control selectpicker show-tick" data-selected-text-format="count" data-live-search="true"></select>
+                </div>
+                <div class="form-group">
+                    <select asp-for="RussiaSubjectId" asp-items="@ViewBag.RussiaSubjectId" title="- @Html.DisplayNameFor(m => m.RussiaSubjectId) -" class="form-control selectpicker show-tick" data-selected-text-format="count" data-live-search="true"></select>
+                </div>
+                <div class="form-group">
+                    <select asp-for="CompetenceId" asp-items="@ViewBag.CompetenceId" title="- @Html.DisplayNameFor(m => m.CompetenceId) -" class="form-control selectpicker show-tick" data-selected-text-format="count" data-live-search="true"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select asp-for="Order" class="form-control auto-submit" asp-items="Html.GetEnumSelectList<OrderBy>()"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <select asp-for="PageSize" class="form-control auto-submit" asp-items="Html.GetEnumSelectList<WS_CMVC_Demo.Models.UserPackagesViewModels.PageSize>()"></select>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>
+<p>Строк удовлетворяющих поиску: @Model.Requests.TotalItemCount</p>
+@Html.PagedListPager(Model.Requests, page => Url.Action("Index",
+    new { page, PageSize = (int)Model.PageSize, Order = (int)Model.Order, Type = (int?)Model.Type, Model.Searchstring, Model.BadgeServiceId, Model.UserSubcategoryId, Model.CountryId, Model.RussiaSubjectId, Model.CompetenceId, DateStart = Model.DateStart?.ToString("s"), DateEnd = Model.DateEnd?.ToString("s") }),
+    paginationOptions)
+<table class="table table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                @Html.DisplayNameForInnerType((BadgeServiceCheckup item) => item.User)
+            </th>
+            <th colspan="2">
+                @Html.DisplayNameForInnerType((BadgeServiceCheckup item) => item.BadgeService)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((BadgeServiceCheckup item) => item.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((BadgeServiceCheckup item) => item.Creator)
+            </th>
+            <th>
+                @Html.DisplayNameForInnerType((BadgeServiceCheckup item) => item.Type)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Requests)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Delegation" asp-action="UserDetails" asp-route-id="@item.UserId">@item.User.CropName</a>
+                </td>
+                <td class="pr-0">
+                    @if (!string.IsNullOrEmpty(item.BadgeService.IcoUrl))
+                    {
+                        <img src="@item.BadgeService.IcoUrl" style="width: 25px;">
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BadgeService.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    <a asp-controller="Delegation" asp-action="UserDetails" asp-route-id="@item.CreateUserId">@item.Creator.CropName</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+<script type="text/javascript">
+    var edited = false;
+
+    $('.selectpicker').on('changed.bs.select', function () {
+        edited = true;
+    });
+
+    $('.selectpicker').on('hidden.bs.select', function () {
+        if(edited) {
+            $('#search').submit();
+        }
+    });
+</script>
+}

@@ -1,0 +1,58 @@
+﻿@using WS_CMVC_Demo.Models.ManageViewModels
+@model UserArrivalViewModel
+@{
+    ViewData["Title"] = "Данные о прибытии";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h4>@ViewData["UserFIO"]</h4>
+<hr />
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group row">
+        <label asp-for="ArrivalDateTime" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <input asp-for="ArrivalDateTime" class="form-control" />
+            <span asp-validation-for="ArrivalDateTime" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="ArrivalDetails" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <input asp-for="ArrivalDetails" class="form-control" />
+            <span asp-validation-for="ArrivalDetails" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="DepartureDateTime" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <input asp-for="DepartureDateTime" class="form-control" />
+            <span asp-validation-for="DepartureDateTime" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="DepartureDetails" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <input asp-for="DepartureDetails" class="form-control" />
+            <span asp-validation-for="DepartureDetails" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="offset-md-2 col-md-10">
+            <input type="submit" class="btn btn-outline-dark" value="Записать" />
+        </div>
+    </div>
+</form>
+@using (Html.BeginForm("ArrivalDelete", "Delegation", new { id = ViewData["id"] }, FormMethod.Post, true, null))
+{
+    <div class="form-group row">
+        <div class="offset-md-2 col-md-10">
+            <input type="submit" class="btn btn-outline-danger" value="Очистить" onclick="return confirm('Вы действительно хотите очистить данные о прибытии?');" />
+        </div>
+    </div>
+}
+
+<div>
+    <a asp-action="Index">Назад</a>
+</div>

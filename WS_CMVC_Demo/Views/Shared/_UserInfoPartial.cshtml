@@ -1,0 +1,21 @@
+﻿@model ApplicationUser
+
+    <dl class="row">
+        <dt class="col-lg-3 col-md-4 text-md-right">@Html.LabelFor(m => m.SecondName)</dt>
+        <dd class="col-lg-9 col-md-8">@Html.DisplayFor(m => m.SecondName)</dd>
+
+        <dt class="col-lg-3 col-md-4 text-md-right">@Html.LabelFor(m => m.Name)</dt>
+        <dd class="col-lg-9 col-md-8">@Html.DisplayFor(m => m.Name)</dd>
+
+        <dt class="col-lg-3 col-md-4 text-md-right">@Html.LabelFor(m => m.MiddleName)</dt>
+        <dd class="col-lg-9 col-md-8">@Html.DisplayFor(m => m.MiddleName)</dd>
+
+        <dt class="col-lg-3 col-md-4 text-md-right">@Html.LabelFor(m => m.PhoneNumber)</dt>
+        <dd class="col-lg-9 col-md-8">+@Html.DisplayFor(m => m.PhoneNumber)</dd>
+
+        <dt class="col-lg-3 col-md-4 text-md-right">@Html.LabelFor(m => m.Email)</dt>
+        <dd class="col-lg-9 col-md-8">@Html.DisplayFor(m => m.Email)</dd>
+
+        <dt class="col-lg-3 col-md-4 text-md-right">@Html.LabelFor(m => m.PassportNumber)</dt>
+        <dd class="col-lg-9 col-md-8">@Html.DisplayFor(m => m.PassportNumber)</dd>
+    </dl>

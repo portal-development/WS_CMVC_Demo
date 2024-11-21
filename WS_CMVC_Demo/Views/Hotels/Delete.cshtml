@@ -1,0 +1,38 @@
+﻿@model WS_CMVC_Demo.Models.Service.Hotel
+
+@{
+    ViewData["Title"] = "Удаление отеля";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Отель будет удален из всех пакетов и услуг. Убедитесь что проживание в данном отеле никем не забронировано. Вы подтверждаете удаление отеля?</h3>
+<div>
+    
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CountOfStars)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CountOfStars)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index">Назад</a>
+    </form>
+</div>

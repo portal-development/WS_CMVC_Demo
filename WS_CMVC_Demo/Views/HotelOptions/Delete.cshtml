@@ -1,0 +1,38 @@
+﻿@model WS_CMVC_Demo.Models.Service.HotelOption
+
+@{
+    ViewData["Title"] = "Удаление Варианта размещения";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Вариант размещения будет удален из всех пакетов и услуг. Убедитесь что проживание тут никем не забронировано. Вы подтверждаете удаление?</h3>
+<div>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfSeats)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfSeats)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="HotelId" />
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-controller="Hotels" asp-action="Details" asp-route-id="@ViewBag.HotelId">Назад</a>
+    </form>
+</div>

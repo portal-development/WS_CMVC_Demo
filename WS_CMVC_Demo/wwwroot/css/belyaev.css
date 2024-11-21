@@ -1,0 +1,263 @@
+﻿body {
+}
+
+#navigation, .navbar .navbar-default {
+    background-image: url("../img/headback3.png");
+    background-position: right;
+    margin-left: 0px;
+    margin-right:0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
+    min-height: 50px;
+}
+
+
+
+@media screen and (min-width: 0px) {
+    .mainnav {
+        font-size: 14px !important;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .mainnav {
+        font-size: 20px !important;
+    }
+}
+
+.mainlogo{
+    padding: 0px;
+    margin: 0px;
+}
+
+.navigationcontainer {
+    
+    align-items: start !important;
+    padding: 0%;
+    
+}
+
+@media screen and (min-width: 0px) {
+    .navigationcontainer {
+        margin-left: 0%;
+    }
+}
+
+@media screen and (min-width: 950px) {
+    .navigationcontainer {
+        margin-left: 23%;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    #navigation, .navbar .navbar-default {
+        min-height: 120px;
+    }
+}
+
+.mainnavbar{
+    margin-bottom:0px;
+    padding-bottom: 0px;
+}
+
+.back311 {
+    background-image: url("../img/back311.png");
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+.aligncenter {
+    text-align: center;
+}
+
+.logos {
+    width: 25%;
+    padding-right: 2%;
+    padding-left: 2%;
+}
+.mainmenu{
+    padding-top:2%;
+    padding-left:10px;
+}
+
+.footer1 {
+    position: absolute;
+    bottom: 0;
+}
+
+body {
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
+}
+
+@media screen and (min-width: 0px) {
+    body {
+        padding-bottom: 250px;
+    }
+}
+
+@media screen and (min-width: 1366px) {
+    body {
+        padding-bottom: 150px;
+    }
+}
+
+@media screen and (min-width: 0px) {
+    .buttoncol {
+        text-align: center;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .buttoncol {
+        text-align:left;
+    }
+}
+
+@media screen and (min-width: 0px) {
+    .mainmenu {
+        text-align: right;
+    }
+}
+
+.widelogo {
+    height: 220px;
+}
+
+.thinlogo {
+    height: 100px;
+}
+
+
+@media screen and (min-width: 0px) {
+    .biglogo {
+        display: none;
+    }
+    .mediumlogo {
+        display: none
+    }
+    .smalllogo {
+        display: none
+    }
+    .xslogo {
+        display: block
+    }
+    .startbutton{
+        width: 180px;
+    }
+    .govers {
+        width: 100px;
+    }
+    .founders {
+        padding-top: 0px;
+        padding-bottom: 30px;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .biglogo {
+        display: none;
+    }
+
+    .mediumlogo {
+        display: none
+    }
+
+    .smalllogo {
+        display: block
+    }
+
+    .xslogo {
+        display: none
+    }
+    .startbutton {
+        width: 200px;
+    }
+    .founders {
+        padding-top: 0px;
+        padding-bottom: 30px;
+    }
+    
+}
+
+@media screen and (min-width: 1250px) {
+    .biglogo {
+        display: none;
+    }
+
+    .mediumlogo {
+        display: block
+    }
+
+    .smalllogo {
+        display: none
+    }
+
+    .xslogo {
+        display: none
+    }
+    .startbutton {
+        width: 250px;
+    }
+    .govers {
+        width: 150px;
+    }
+    .founders {
+        padding-top: 30px;
+    }
+}
+
+@media screen and (min-width: 1566px) {
+    .biglogo {
+        display: block
+    }
+    .mediumlogo{
+        display: none
+    }
+    .smalllogo {
+        display: none
+    }
+
+    .xslogo {
+        display: none
+    }
+    .founders {
+        padding-top: 30px;
+    }
+    .govers {
+        width: 200px;
+    }
+}
+
+
+@media screen and (min-width: 0px) {
+    .bigcarousel {
+        display: none;
+    }
+
+    .smallcarousel {
+        display: block
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .bigcarousel {
+        display: block
+    }
+
+    .smallcarousel {
+        display: none
+    }
+}
+
+.logoffbutton{
+    padding: 0px;
+    border: 0px;
+}
+
+.inv{
+    display: none;
+}

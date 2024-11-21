@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "Выбор категории";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<h4>Выберите категорию нового участника</h4>
+<form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <select class="form-control" asp-items="ViewBag.Category" name="categoryddl"></select>
+                <input type="hidden" value="@ViewData["UserCategoryId"]" name="categoryid" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Далее" class="btn btn-primary" />
+            </div>
+</form>

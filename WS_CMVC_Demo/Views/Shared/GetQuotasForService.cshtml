@@ -1,0 +1,35 @@
+﻿@model IList<WS_CMVC_Demo.Models.Service.Quota>
+
+    <div id="quotas">
+                    <p>Доступные квоты</p>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <td>
+                                Начало
+                            </td>
+                            <td>
+                                Конец
+                            </td>
+                            <td>
+                               Квота
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                @foreach (var quota in Model) {
+                        <tr>
+                            <td>
+                                @quota.StartDate
+                            </td>
+                            <td>
+                                @quota.FinishDate
+                            </td>
+                            <td>
+                                @quota.AvailableNum
+                            </td>
+                        </tr>
+                }
+                    </tbody>
+                </table>
+                </div>

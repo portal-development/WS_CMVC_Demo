@@ -1,0 +1,38 @@
+﻿@model WS_CMVC_Demo.Models.Badge.BadgeServiceCheckup
+
+<div>
+    <div class="text">
+        <p class="text-center lead">
+            @if (Model.Type == WS_CMVC_Demo.Models.Badge.ServiceCheckupType.Approve)
+            {
+                <i class="text-success fa fa-check-square-o" style="font-size: 150px;" aria-hidden="true"></i>
+            }
+            else
+            {
+                <i class="text-danger fa fa-window-close-o" style="font-size: 150px;" aria-hidden="true"></i>
+            }
+            <br />@Html.DisplayFor(model => model.Type)
+        </p>
+    </div>
+
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.BadgeService)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BadgeService.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.CropName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreateDate)
+        </dd>
+    </dl>
+</div>

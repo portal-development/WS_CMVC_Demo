@@ -1,0 +1,173 @@
+﻿@using WS_CMVC_Demo.Models.UserPackagesViewModels
+@using WS_CMVC_Demo.Models.UsersViewModels
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model UserManagerViewModel
+
+@{
+    ViewBag.Title = "Управление пользователями и группами";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var paginationOptions = new PagedListRenderOptions()
+            {
+                PageClasses = new string[] { "page-link" },
+                LiElementClasses = new[] { "page-item" },
+                UlElementClasses = new[] { "pagination", "justify-content-center" },
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always
+            };
+}
+
+<h2><i class="fa fa-qrcode" aria-hidden="true"></i> @ViewBag.Title</h2>
+<div class="modal fade" id="deleteRoleModal" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteRoleModalModalLabel">Удаление роли</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Вы действительно хотите удалить роль?<br />Данное действие невозможно отменить
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                @using (Html.BeginForm("DeleteRole", "Users"))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" value="" id="roleId" name="roleId" />
+                    <input type="submit" value="Удалить" class="btn btn-danger" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-7">
+        <h4>Редактор пользователей</h4>
+        <hr />
+        <form method="get">
+            <div class="form-group">
+                <label asp-for="FIO" class="control-label"></label>
+                <input asp-for="FIO" class="form-control auto-submit" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control auto-submit" />
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleId" class="control-label"></label>
+                <select asp-for="RoleId" class="form-control auto-submit" asp-items="@(new SelectList(Model.Roles, "Id", "Name"))">
+                    <option>*</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PageSize" class="control-label"></label>
+                <select asp-for="PageSize" class="form-control auto-submit" asp-items="@Html.GetEnumSelectList<PageSize>()"></select>
+            </div>
+        </form>
+        <p>Пользователей удовлетворяющих поиску: @Model.Users.TotalItemCount</p>
+        @Html.PagedListPager(Model.Users, page => Url.Action("Index",
+        new { page, PageSize = (int)Model.PageSize, Model.FIO, Model.Email, Model.RoleId }),
+        paginationOptions)
+        <table class="table table-bordered">
+            <tbody>
+                @foreach (var user in Model.Users.OrderBy(u => u.CropName))
+                {
+                    <tr>
+                        <td>
+                            <a style="word-break: break-all;" asp-controller="Delegation" asp-action="UserDetails" asp-route-id="@user.Id">
+                                @*<img class="img-thumbnail" style="max-width:80px;" src="@user.GetAvatarSource(UserAvatar.AvatarResolution.Low)" />*@
+                                @user.UserName
+                            </a>
+                            <br />
+                            <span class="lead">@Html.DisplayFor(u => user.CropName)</span>
+                            <br />
+                            <a href="/Users/EditUser/@user.Id" title="Редактировать" class="btn btn-outline-warning"><i class="fa fa-pencil"></i></a>
+                            <a href="/Users/LoginAsUser/@user.Id" title="Войти за пользователя" class="btn btn-outline-info"><i class="fa fa-sign-in"></i></a>
+                            @Html.ActionLink("Сбросить пароль", "ResetPassword", new { user.Id }, new { @class = "btn btn-outline-secondary" })
+                        </td>
+                        <td>
+                            <dl class="row">
+                                <dt class="col-sm-6">@Html.LabelFor(u => user.Email, new { @class = "mb-0" })</dt>
+                                <dd class="col-sm-6 mb-0"><span style="word-break: break-all;" class="text-@(user.EmailConfirmed ? "success" : "danger" )">@Html.DisplayFor(u => user.Email)</span></dd>
+                                <dt class="col-sm-6">@Html.LabelFor(u => user.SecondName, new { @class = "mb-0" })</dt>
+                                <dd class="col-sm-6 mb-0">@Html.DisplayFor(u => user.SecondName)</dd>
+                                <dt class="col-sm-6">@Html.LabelFor(u => user.Name, new { @class = "mb-0" })</dt>
+                                <dd class="col-sm-6 mb-0">@Html.DisplayFor(u => user.Name)</dd>
+                                <dt class="col-sm-6">@Html.LabelFor(u => user.MiddleName, new { @class = "mb-0" })</dt>
+                                <dd class="col-sm-6 mb-0">@Html.DisplayFor(u => user.MiddleName)</dd>
+                                <dt class="col-sm-6">@Html.LabelFor(u => user.PhoneNumber, new { @class = "mb-0" })</dt>
+                                <dd class="col-sm-6 mb-0 @(user.PhoneNumberConfirmed ? "text-success" : "text-warning")">@Html.DisplayFor(u => user.PhoneNumber)</dd>
+                                <dt class="col-sm-6">@Html.LabelFor(u => user.RegisterDate, new { @class = "mb-0" })</dt>
+                                <dd class="col-sm-6 mb-0">@Html.DisplayFor(u => user.RegisterDate)</dd>
+                                <dt class="col-sm-6">@Html.LabelFor(u => user.LastSigInDate, new { @class = "mb-0" })</dt>
+                                <dd class="col-sm-6 mb-0">@Html.DisplayFor(u => user.LastSigInDate)</dd>
+                            </dl>
+                        </td>
+                        <td>
+                            <ul>
+                                @foreach (var role in user.Roles.Select(ur => ur.Role))
+                                {
+                                    <li>@role.Name</li>
+                                }
+                            </ul>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-5">
+        <h4>Редактор ролей</h4>
+        <hr />
+        Ролей в системе: @Model.Roles.Count <a href="/Users/CreateRole" class="btn btn-outline-secondary"><i class="fa fa-plus"></i>&nbsp;Добавить</a>
+        <table class="table table-bordered">
+            <tbody>
+                @foreach (var role in Model.Roles.OrderBy(r => r.Name))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(r => role.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(r => role.Description)
+                        </td>
+                        <td>
+                            <a href="/Users/EditRole/@role.Id" title="Редактировать" class="btn btn-outline-warning"><i class="fa fa-pencil"></i></a>
+                            <button data-toggle="modal" data-target="#deleteRoleModal" class="btn btn-outline-danger" data-whatever="@role.Id"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+<script type="text/javascript">
+    $('#deleteRoleModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var recipient = button.data('whatever');
+        var modal = $(this);
+        modal.find('#roleId').val(recipient);
+    });
+
+    var text = '';
+    document.onkeypress = function(e) {
+        if(e.code.substr(0, 5) == 'Digit') {
+            text += e.code.substring(5, 6);
+        } else if(e.code.substr(0, 3) == 'Key') {
+            text += e.code.substring(3, 4);
+        } else if(e.code == 'Enter') {
+            var n = text.length - 32;
+            text = text.substring(n);
+            if(text.length == 32 && text[12] == '4') {
+                console.log(text);
+                window.location.replace('/Users?&UserId=' + text);
+            }
+        }
+    };
+</script>
+}
+

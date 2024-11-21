@@ -1,0 +1,91 @@
+﻿@model IList<ApplicationUser>
+
+@{
+    ViewData["Title"] = "Загрузка пользователей Деловой программы";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="file" name="postedFile" />
+        <input type="submit" class="btn btn-outline-success" value="Импорт" />
+</form>
+@if (Model != null)
+    {
+        <hr />
+        <h3>Добавленные пользователи:</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.First().SecondName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.First().Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.First().MiddleName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.First().Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.First().PhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.First().UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.First().RussiaSubject)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => Model.First().CompanyName)
+                    </th>
+                    <th>
+                        Пакет
+                    </th>
+                </tr>
+            </thead>
+            @for (int i=0; i < Model.Count; i++) {
+            var index = i + 1;
+                <tr>
+                    <td>@index</td>
+                    <td>
+                        @Html.DisplayFor(model => Model[i].SecondName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => Model[i].Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => Model[i].MiddleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => Model[i].Email)
+                    </td>
+                    <td>
+                        +@Html.DisplayFor(model => Model[i].PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => Model[i].UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => Model[i].RussiaSubjectId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => Model[i].CompanyName)
+                    </td>
+                    <td>
+                        @if (Model[i].PackageServices.Any())
+                        {
+                            <p>Забронирован</p>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+        
+    <h3>Ошибочные строки: @ViewData["ErrorRows"]</h3>
+    }
+    <a asp-action="Index" asp-controller="AdminPanel">Назад</a>

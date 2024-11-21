@@ -1,0 +1,111 @@
+﻿@model MemberViewModel
+@{
+    List<string> ExProp = ViewBag.ExcludeProp ?? new List<string>();
+}
+
+
+<div class="modal fade bd-example-modal-lg" id="agModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteResearchModalModalLabel">Политика конфиденциальности персональных данных посетителей сайта в информационно-телекоммуникационной сети "Интернет"</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Demo</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Я прочитал(а)</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label asp-for="UserSubcategoryId" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <select asp-for="UserSubcategoryId" class="form-control" asp-items="ViewBag.UserSubcategoryId"></select>
+        <span asp-validation-for="UserSubcategoryId" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row @(ExProp.Contains(nameof(Model.CountryId)) ? "d-none" : null)">
+    <label asp-for="CountryId" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <select asp-for="CountryId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.CountryId"></select>
+    </div>
+</div>
+<div class="form-group row @(ExProp.Contains(nameof(Model.RussiaSubjectId)) ? "d-none" : null)">
+    <label asp-for="RussiaSubjectId" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <select asp-for="RussiaSubjectId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.RussiaSubjectId"></select>
+    </div>
+</div>
+<div class="form-group row @(ExProp.Contains(nameof(Model.CompetenceId)) ? "d-none" : null)">
+    <label asp-for="CompetenceId" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <select asp-for="CompetenceId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.CompetenceId"></select>
+    </div>
+</div>
+<div class="form-group row @(ExProp.Contains(nameof(Model.CompanyName)) ? "d-none" : null)">
+    <label asp-for="CompanyName" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="CompanyName" class="form-control" />
+        @*@Html.TextBoxFor(m => m.CompanyName, ExProp.Contains(nameof(Model.CompanyName)) ? (object)new { @class = "form-control", @disabled = "disabled" } : new { @class = "form-control" })*@
+        <span asp-validation-for="CompanyName" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Email" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="PhoneNumber" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="SecondName" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="SecondName" class="form-control" />
+        <span asp-validation-for="SecondName" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="Name" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="MiddleName" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="MiddleName" class="form-control" />
+        <span asp-validation-for="MiddleName" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <label asp-for="PassportNumber" class="col-md-2 col-form-label"></label>
+    <div class="col-md-10">
+        <input asp-for="PassportNumber" class="form-control" />
+        <span asp-validation-for="PassportNumber" class="text-danger"></span>
+    </div>
+</div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            <label asp-for="Agreement" class="col-form-label"></label>
+            <button data-toggle="modal" data-target="#agModal" title="Полная версия" onclick="return false" class="btn btn-sm btn-outline-info">Прочитать</button>
+        </div>
+        <div class="col-md-10">
+            <input asp-for="Agreement" class="form-control" />
+            <span asp-validation-for="Agreement" class="text-danger"></span>
+        </div>
+    </div>

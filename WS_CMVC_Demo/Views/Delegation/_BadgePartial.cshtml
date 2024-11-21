@@ -1,0 +1,64 @@
+﻿@model WS_CMVC_Demo.Models.UsersViewModels.BadgeViewModel
+
+@{
+    string fontcolor = Model.BadgeTextColor ?? "#ffffff";
+    string bgcolor = Model.BadgeColor ?? "#000000";
+}
+@*<img style="height: 50vh; width: 34.54vh; position: absolute; left: 56.2vh; opacity: 30%;" src="~/img/бейджи_ФНЧ_2022-02.png" />*@
+<table class="main-table hid" style="color: @fontcolor;">
+    <tr>
+        <td class="main-td main-td-l" style="background-color: @bgcolor;">
+            <span class="t3">ЛЕГЕНДА</span>
+            <div class="row">
+                <div class="col-6 c-leg"><table><tr><td><img class="ic" src="/img/ico/lunch.svg" /></td><td class="leg-td">ОБЕД</td></tr></table></div>
+                <div class="col-6 c-leg"><table><tr><td><img class="ic" src="/img/ico/press.svg" /></td><td class="leg-td">ДОСТУП В ПРЕСС-ЦЕНТР</td></tr></table></div>
+                <div class="col-6 c-leg"><table><tr><td><img class="ic" src="/img/ico/dinner.svg" /></td><td class="leg-td">УЖИН</td></tr></table></div>
+                <div class="col-6 c-leg"><table><tr><td><img class="ic" src="/img/ico/note.svg" /></td><td class="leg-td">ВОЗМОЖНОСТЬ ПОСЕЩЕНИЯ МЕРОПРИЯТИЙ ДЕЛОВОЙ ПРОГРАММЫ</td></tr></table></div>
+                <div class="col-6 c-leg"><table><tr><td><img class="ic" src="/img/ico/bus.svg" /></td><td class="leg-td">ИСПОЛЬЗОВАНИЕ ТРАНСПОРТА</td></tr></table></div>
+                <div class="col-6 c-leg"><table><tr><td><img class="ic" src="/img/ico/vip-dinner.svg" /></td><td class="leg-td">ДОСТУП В VIP-РЕСТОРАН</td></tr></table></div>
+                <div class="col-6 c-leg"><table><tr><td><img class="ic" src="/img/ico/packet.svg" /></td><td class="leg-td">ПАКЕТ С РАЗДАТОЧНЫМИ МАТЕРИАЛАМИ</td></tr></table></div>
+                <div class="col-6 c-leg"><table><tr><td><img class="ic" src="/img/ico/ticket.svg" /></td><td class="leg-td">ПРОХОД НА ОТКРЫТИЕ И ЗАКРЫТИЕ ЧЕМПИОНАТА</td></tr></table></div>
+            </div>
+            <div style="height: 2.6vh;"></div>
+            <span class="t3">СПИСОК ЭКСТРЕННЫХ ТЕЛЕФОНОВ</span>
+            <div style="height: 1.3vh;"></div>
+            <div class="row">
+                <div class="col-9 pr-1 t4">
+                    <div class="row"><div class="col-auto pr-0">101</div><div class="col px-0"><div class="c-dot"></div></div><div class="col-auto pl-0">СЛУЖБА ПОЖАРНОЙ ОХРАНЫ</div></div>
+                    <div class="row"><div class="col-auto pr-0">102</div><div class="col px-0"><div class="c-dot"></div></div><div class="col-auto pl-0">СЛУЖБА ПОЛИЦИИ</div></div>
+                    <div class="row"><div class="col-auto pr-0">103</div><div class="col px-0"><div class="c-dot"></div></div><div class="col-auto pl-0">СЛУЖБА СКОРОЙ МЕДИЦИНСКОЙ ПОМОЩИ</div></div>
+                    <div class="row"><div class="col-auto pr-0">104</div><div class="col px-0"><div class="c-dot"></div></div><div class="col-auto pl-0">АВАРИЙНАЯ СЛУЖБА ГАЗОВОЙ СЕТИ</div></div>
+                    <div class="row"><div class="col-auto pr-0">8(8342)28-28-28</div><div class="col px-0"><div class="c-dot"></div></div><div class="col-auto pl-0">ТЕЛЕФОН ДЕЖУРНОГО УФСБ</div></div>
+                </div>
+                <div class="col-3"><img src="/img/ico/qrcode.svg" style="width: 5.5vh; margin-top: 0.5vh;" /><div style="height: 1.2vh;"></div><span class="t2">WSR.ONLINE</span></div>
+            </div>
+            <div style="height: 1.5vh;"></div>
+            <div class="t1 text-center">#НАЦФИНАЛ2022</div>
+        </td>
+        <td class="main-td">
+            <div class="d-flex flex-column h-100">
+                <img style="background-color: @bgcolor;" class="ih" src="/img/ico/head.svg" />
+                <div class="main-td-r">
+                    <div class="row justify-content-between">
+                        <div class="col-auto"><span class="t22">@Model.SecondName?.ToUpper()<br />@Model.Name?.ToUpper()<br />@Model.MiddleName?.ToUpper()</span></div>
+                        <div class="col-auto"><div class="qrcode" data-userid="@Model.Id"></div></div>
+                    </div>
+                    <div style="height: 0.7vh;"></div>
+                    <span class="t33">@((Model.RussiaSubject ?? Model.Country)?.ToUpper())</span><br />
+                    <span class="t33">@Model.Competence?.ToUpper()</span>
+                </div>
+                <div class="mt-auto">
+                    <table class="table-ico">
+                        <tr>
+                            @if(Model.Pictograms != null) foreach (var item in Model.Pictograms.Where(ico => !string.IsNullOrEmpty(ico.IcoUrl)).OrderBy(ico => ico.Order))
+                            {
+                                <td><img class="ic2" src="@item.IcoUrl" /></td>
+                            }
+                        </tr>
+                    </table>
+                    <div class="dbottom d-flex align-items-center" style="background-color: @bgcolor;">@Html.Raw(Model.Subcategory)</div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>

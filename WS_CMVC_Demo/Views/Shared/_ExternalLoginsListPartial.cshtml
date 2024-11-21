@@ -1,0 +1,21 @@
+﻿@model ExternalLoginListViewModel
+@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> SignInManager
+
+@{
+    var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+    if (loginProviders.Count == 0)
+    {
+
+    }
+    else
+    {
+        <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+            <div>
+                @foreach (var provider in loginProviders)
+                {
+                    <button type="submit" class="btn btn-dark" name="provider" value="@provider.Name" title="Войти с помощью @provider.DisplayName">Войти через <b>@provider.DisplayName</b></button>
+                }
+            </div>
+        </form>
+    }
+}

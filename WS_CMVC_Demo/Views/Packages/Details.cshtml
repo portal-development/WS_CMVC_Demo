@@ -1,0 +1,85 @@
+﻿@model IEnumerable<WS_CMVC_Demo.Models.Service.PackageService>
+
+@{
+    ViewData["Title"] = "Конструктор пакета";
+}
+
+<h1>@ViewData["Title"]</h1>
+<h2>@ViewBag.PackageName</h2>
+
+<div class="btn-group">
+    <a asp-action="CreatePackageService" asp-route-id="@ViewBag.PackageId" asp-route-eventid="@ViewBag.EventId" class="btn btn-sm btn-outline-success">Добавить услугу</a>
+    <a asp-action="Delete" asp-route-eventid="@ViewBag.eventid" asp-route-id="@ViewBag.PackageId" class="btn btn-sm btn-outline-danger">Удалить</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Service.ServiceType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinishDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinimalDaysCount)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Service.ServiceType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Service.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Service.Description)
+            </td>
+            <td>
+                <div class="@(item.Service.ServiceType.ShowDates ? "" : "inv")">
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </div>
+            </td>
+            <td>
+                <div class="@(item.Service.ServiceType.ShowDates ? "" : "inv")">
+                    @Html.DisplayFor(modelItem => item.FinishDate)
+                </div>
+            </td>
+            <td>
+                <div class="@(item.Service.ServiceType.ShowDates ? "" : "inv")">
+                    @Html.DisplayFor(modelItem => item.MinimalDaysCount)
+                </div>
+            </td>
+            <td>
+                    <a asp-action="EditPackageService" asp-route-id="@item.Id" asp-route-packageid="@ViewBag.PackageId" asp-route-eventid="@ViewBag.EventId" class="btn btn-sm btn-outline-primary">Изменить</a> 
+                
+                <a asp-action="DeletePackageService" asp-route-id="@item.Id" asp-route-packageid="@ViewBag.PackageId" asp-route-eventid="@ViewBag.EventId" class="btn btn-sm btn-outline-danger">Удалить</a>
+            </td>
+            <td>
+                <a asp-action="TracePackageService" asp-route-id="@item.Id" asp-route-packageid="@ViewBag.PackageId" asp-route-eventid="@ViewBag.EventId" class="btn btn-sm btn-outline-primary">Обновить везде</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<blockquote>
+    <i>Пакеты, в которых есть несколько услуг одного типа являются настраиваемыми, иначе - фиксированными.</i>
+</blockquote>
+
+
+    <a asp-action="List" asp-route-eventid="@ViewBag.EventId">Назад</a>
+    <hr/>

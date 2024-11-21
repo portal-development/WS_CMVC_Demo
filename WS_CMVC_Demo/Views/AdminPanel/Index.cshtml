@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Панель администратора";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div class="row" style="font-size: 1.25rem;">
+    <div class="col-sm-4">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="dict-tab" data-toggle="pill" href="#dict" role="tab" aria-controls="dict" aria-selected="true">Справочники</a>
+            <a class="nav-link" id="cat-tab" data-toggle="pill" href="#cat" role="tab" aria-controls="cat" aria-selected="false">Пользователи</a>
+            <a asp-controller="UserPackages" asp-action="RequestList" asp-route-eventid="1" class="nav-link">Заявки</a>
+            <a asp-controller="BadgeServiceCheckups" asp-action="Start" class="nav-link">Сканирование контрольных точек</a>
+            <a asp-controller="BadgeServiceCheckups" asp-action="Index" class="nav-link">История прохождения контрольных точек</a>
+            <a asp-controller="UserPackages" asp-action="DownloadRequests" class="nav-link">Выгрузка</a>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="dict" role="tabpanel" aria-labelledby="dict-tab">
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a asp-controller="Hotels" asp-action="Index">Отели</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-controller="Service" asp-action="Index">Услуги</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-controller="BadgeServices" asp-action="Index">Услуги на бейджах (пиктограммы)</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-controller="Packages" asp-action="Index">Пакеты</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-controller="Events" asp-action="Index">Мероприятия</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="cat" role="tabpanel" aria-labelledby="cat-tab">
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a asp-controller="UserCategories" asp-action="Index">Категории</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-controller="UserSubcategories" asp-action="Index">Подкатегории</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-controller="UserCompetences" asp-action="Index">Компетенции</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-controller="UserCountries" asp-action="Index">Страны</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-controller="UserRussiaSubjects" asp-action="Index">Регионы</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a asp-controller="Account" asp-action="RegisterUrls">Ссылки для регистрации</a>
+                        </li>
+                        @if (User.IsInRole("administrator"))
+                        {
+                            <li class="list-group-item">
+                                <a asp-controller="Users" asp-action="Index">Управление пользователями</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a asp-controller="Users" asp-action="UploadUsers">Загрузка пользователей</a>
+                            </li>
+                            @if (User.IsInRole("emailsender"))
+                            {
+                                <li class="list-group-item">
+                                    <a asp-controller="Users" asp-action="EmailSender">Рассылка Email</a>
+                                </li>
+                            }
+                        }
+                        @if (User.IsInRole("accreditator"))
+                        {
+                            <li class="list-group-item">
+                                <a asp-controller="QuickRegistration" asp-action="Index">Быстрая регистрация</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

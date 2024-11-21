@@ -1,0 +1,22 @@
+﻿@model Dictionary<string,string>
+@{
+    ViewData["Title"] = "Url на регистрацию пользователей для определенных категорий";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Наименование категории</th>
+            <th>Url для регистрации</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr><td>@item.Key</td><td><a target="_blank" href="@item.Value">@item.Value</a></td></tr>
+        }
+    </tbody>
+</table>
+

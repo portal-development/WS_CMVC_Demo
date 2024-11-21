@@ -1,0 +1,62 @@
+﻿@model WS_CMVC_Demo.Models.Service.Quota
+
+@{
+    ViewData["Title"] = "Редактирование квоты";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <b><label asp-for="Service" class="control-label"></label></b>
+                <br/>
+                <b>@Html.DisplayFor(modelItem => Model.Service.Name)</b>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FinishDate" class="control-label"></label>
+                <input asp-for="FinishDate" class="form-control" />
+                <span asp-validation-for="FinishDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AvailableNum" class="control-label"></label>
+                <input asp-for="AvailableNum" class="form-control" />
+                <span asp-validation-for="AvailableNum" class="text-danger"></span>
+                <blockquote>
+                    <i>При добавлении квоты на вариант размещения с несколькими местами, пожалуйста, укажите общее количество мест (не номеров).</i>
+                </blockquote>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cost" class="control-label"></label>
+                <input asp-for="Cost" class="form-control" />
+                <span asp-validation-for="Cost" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="FixedCost" /> @Html.DisplayNameFor(model => model.FixedCost)
+                </label>
+                <blockquote>
+                    <i>Данное поле обозначает фиксированную стоимость за услугу (не посуточную).</i>
+                </blockquote>
+            </div>
+            <input type="hidden" asp-for="ServiceId" />
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Service" asp-action="Details" asp-route-id="@ViewBag.ServiceId">Назад</a>
+</div>
+

@@ -1,0 +1,14 @@
+﻿<script type="text/javascript">
+    var excPropArray = @Html.Raw(ViewBag.ExcPropArray);
+    $('#UserSubcategoryId').change(function() {
+        var scid = $(this).val();
+        $(excPropArray).each(function(i) {
+            if(this.Id == scid) {
+                $('.d-none').removeClass('d-none');
+                $(this.ExcludeProperties).each(function(i) {
+                    $('#' + this).parents('.form-group').addClass('d-none');
+                });
+            }
+        });
+    });
+</script>
